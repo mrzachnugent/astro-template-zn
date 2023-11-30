@@ -6,6 +6,12 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
+export function getLangFromRequest(request: Request) {
+  const referer = request.headers.get('referer');
+  if (!referer) return 'en';
+  return getLangFromUrl(new URL(referer));
+}
+
 export function useTranslations(lang: keyof typeof dictionaries) {
   return function t(key: keyof (typeof dictionaries)[typeof defaultLang]) {
     return dictionaries[lang][key] || dictionaries[defaultLang][key];

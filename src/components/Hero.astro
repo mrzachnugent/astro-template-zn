@@ -6,6 +6,7 @@ import {
 } from '@/i18n/utils';
 
 import { Text } from '@/components/ui/text';
+import { ContactForm } from './ContactForm';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -16,3 +17,7 @@ const translatePath = useTranslatedPath(lang);
 <div class='text-center p-4'>
   <a href={translatePath('/about')}>{t('nav.about')}</a>
 </div>
+
+<main class='max-w-lg w-full mx-auto p-6'>
+  <ContactForm client:load lang={lang} />
+</main>

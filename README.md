@@ -1,6 +1,6 @@
-# Astro Template Z
+# Astro Template ZN
 
-Starting template for an Astro i18n app bootstraped with tailwind, ui by shadcn, and light/dark theme.
+Starting template for an Astro i18n app bootstraped with tailwind, ui by shadcn, light/dark theme, and server actions with validation.
 
 ### This template uses `pnpm`
 
