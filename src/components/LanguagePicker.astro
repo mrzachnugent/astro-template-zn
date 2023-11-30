@@ -1,0 +1,29 @@
+---
+import { languages } from '@/i18n/dictionaries';
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  getPathFromUrl,
+} from '@/i18n/utils';
+import { Text } from '@/components/ui/text';
+import { cn } from '@/lib/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+const path = getPathFromUrl(Astro.url);
+console.log('path', path);
+const translatePath = useTranslatedPath(currentLang);
+---
+
+<ul class='flex gap-8 items-center'>
+  {
+    Object.entries(languages).map(([lang, label]) => (
+      <li>
+        <a href={translatePath(path, lang)}>
+          <Text className={cn(currentLang === lang && 'underline')}>
+            {label}
+          </Text>
+        </a>
+      </li>
+    ))
+  }
+</ul>

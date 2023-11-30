@@ -1,0 +1,52 @@
+---
+import '@/styles/globals.css';
+
+import LanguagePicker from '@/components/LanguagePicker.astro';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import { ModeToggle } from '@/components/ModeToggle';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset='utf-8' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <meta name='viewport' content='width=device-width' />
+    <title>{t('hero.title')}</title>
+  </head>
+  <body class='min-h-screen flex flex-col'>
+    <div class='flex-1'>
+      <slot />
+    </div>
+    <footer class='flex gap-8 md:gap-16 p-2 items-center justify-center'>
+      <LanguagePicker />
+      <ModeToggle lang={lang} client:load />
+    </footer>
+  </body>
+</html>
+
+<script is:inline>
+  const getThemePreference = () => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  };
+  const isDark = getThemePreference() === 'dark';
+  document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+
+  if (typeof localStorage !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+</script>

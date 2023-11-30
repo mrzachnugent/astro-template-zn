@@ -1,0 +1,18 @@
+---
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from '@/i18n/utils';
+
+import { Text } from '@/components/ui/text';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<Text variant='h1' className='text-center p-2'>{t('nav.about')}</Text>
+<div class='text-center p-4'>
+  <a href={translatePath('/')}>{t('nav.home')}</a>
+</div>
