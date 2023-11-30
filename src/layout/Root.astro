@@ -24,7 +24,7 @@ const theme = Astro.cookies.get('zn-theme')?.value || 'light';
     </div>
     <footer class='flex gap-8 md:gap-16 p-2 items-center justify-center'>
       <LanguagePicker />
-      <ModeToggle lang={lang} client:load />
+      <ModeToggle lang={lang} client:idle />
     </footer>
   </body>
 </html>

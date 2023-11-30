@@ -7,6 +7,7 @@ import {
 
 import { Text } from '@/components/ui/text';
 import { ContactForm } from './ContactForm';
+import { Link } from 'lucide-react';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -15,7 +16,13 @@ const translatePath = useTranslatedPath(lang);
 
 <Text variant='h1' className='text-center p-2'>{t('hero.title')}</Text>
 <div class='text-center p-4'>
-  <a href={translatePath('/about')}>{t('nav.about')}</a>
+  <a
+    href={translatePath('/about')}
+    class='hover:underline flex items-center justify-center gap-1.5'
+  >
+    {t('nav.about')}
+    <Link size={14} />
+  </a>
 </div>
 
 <main class='max-w-lg w-full mx-auto p-6'>
