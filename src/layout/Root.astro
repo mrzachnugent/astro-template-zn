@@ -4,7 +4,6 @@ import '@/styles/globals.css';
 import LanguagePicker from '@/components/LanguagePicker.astro';
 import { ModeToggle } from '@/components/ModeToggle';
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import { ViewTransitions } from 'astro:transitions';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -18,7 +17,6 @@ const theme = Astro.cookies.get('zn-theme')?.value || 'light';
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
     <meta name='viewport' content='width=device-width' />
     <title>{t('hero.title')}</title>
-    <ViewTransitions />
   </head>
   <body class='min-h-screen flex flex-col'>
     <header
@@ -30,44 +28,44 @@ const theme = Astro.cookies.get('zn-theme')?.value || 'light';
     <div class='flex-1'>
       <slot />
     </div>
-  </body><!-- Detect and keep track of theme from cookies -->
-  <script is:inline>
-    const getThemePreference = () => {
-      const theme = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('zn-theme'))
-        ?.split('=')[1];
+    <script is:inline>
+      const getThemePreference = () => {
+        const theme = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('zn-theme'))
+          ?.split('=')[1];
 
-      if (theme) {
-        return theme;
+        if (theme) {
+          return theme;
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      };
+
+      const preferenceIsDark = getThemePreference() === 'dark';
+      const classContainsDark =
+        document.documentElement.classList.contains('dark');
+
+      if (preferenceIsDark && !classContainsDark) {
+        document.documentElement.classList.add('dark');
+      } else if (!preferenceIsDark && classContainsDark) {
+        document.documentElement.classList.remove('dark');
       }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
-    };
 
-    const preferenceIsDark = getThemePreference() === 'dark';
-    const classContainsDark =
-      document.documentElement.classList.contains('dark');
+      const observer = new MutationObserver(() => {
+        const isDark = document.documentElement.classList.contains('dark');
+        const newTheme = isDark ? 'dark' : 'light';
+        const date = new Date();
+        date.setTime(date.getTime() + 400 * 24 * 60 * 60 * 1000);
+        const expires = '; expires=' + date.toUTCString();
+        document.cookie = 'zn-theme' + '=' + newTheme + expires + '; path=/';
+      });
 
-    if (preferenceIsDark && !classContainsDark) {
-      document.documentElement.classList.add('dark');
-    } else if (!preferenceIsDark && classContainsDark) {
-      document.documentElement.classList.remove('dark');
-    }
-
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains('dark');
-      const newTheme = isDark ? 'dark' : 'light';
-      const date = new Date();
-      date.setTime(date.getTime() + 400 * 24 * 60 * 60 * 1000);
-      const expires = '; expires=' + date.toUTCString();
-      document.cookie = 'zn-theme' + '=' + newTheme + expires + '; path=/';
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-  </script>
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+    </script>
+  </body><!-- Detect and keep track of theme from cookies -->
 </html>
