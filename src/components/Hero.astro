@@ -6,8 +6,8 @@ import {
 } from '@/i18n/utils';
 
 import { Text } from '@/components/ui/text';
-import { ContactForm } from './ContactForm';
 import { Link } from 'lucide-react';
+import { ContactForm } from './ContactForm';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -15,7 +15,7 @@ const translatePath = useTranslatedPath(lang);
 ---
 
 <Text variant='h1' className='text-center p-2'>{t('hero.title')}</Text>
-<div class='text-center p-4'>
+<div class='text-center p-4 flex justify-center'>
   <a
     href={translatePath('/about')}
     class='hover:underline flex items-center justify-center gap-1.5'

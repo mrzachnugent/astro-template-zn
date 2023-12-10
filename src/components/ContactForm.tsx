@@ -20,9 +20,10 @@ export function ContactForm({ lang }: { lang: 'en' | 'fr' }) {
     });
     const data = await response.json();
     if (data.message) {
-      setResponseMessage(data.message);
       if (data.message === 'Success!') {
         window.location.href = translatePath(`/success`);
+      } else {
+        setResponseMessage(data.message);
       }
     }
     if (data.errors) {

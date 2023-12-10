@@ -43,6 +43,7 @@ export const FormField = React.forwardRef<
         {...props}
       >
         <Label
+          htmlFor='htmlFor'
           className={cn(!!error && 'text-destructive', labelProps?.className)}
           {...labelProps}
         >
