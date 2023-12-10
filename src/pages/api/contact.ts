@@ -11,8 +11,6 @@ import {
 import { decode } from 'decode-formdata';
 import { getLangFromRequest, useTranslations } from '@/i18n/utils';
 
-export const prerender = false;
-
 export const POST: APIRoute = async ({ request }) => {
   const lang = getLangFromRequest(request);
   const t = useTranslations(lang);
